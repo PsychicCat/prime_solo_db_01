@@ -9,7 +9,40 @@ var session = require('express-session');
 var localStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 
+//authenticating users
 var User = require('./models/user');
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err,user){
+    if(err) done(err);
+    done(null,user);
+  });
+});
+
+passport.use('local', new localStrategy({
+      passReqToCallback : true,
+      usernameField: 'username'
+    },
+    function(req, username, password, done){
+      User.findOne({ username: username }, function(err, user) {
+        if (err) throw err;
+        if (!user)
+          return done(null, false, {message: 'Incorrect username and password.'});
+
+        // test a matching password
+        user.comparePassword(password, function(err, isMatch) {
+          if (err) throw err;
+          if(isMatch)
+            return done(null, user);
+          else
+            done(null, false, { message: 'Incorrect username and password.' });
+        });
+      });
+    }));
 
 // Mongo setup
 var mongoURI = "mongodb://localhost:27017/prime_example_passport";
@@ -25,6 +58,7 @@ MongoDB.once('open', function () {
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var register = require('./routes/register');
 
 var app = express();
 
@@ -42,6 +76,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/register', register);
 
 app.use(session({
   secret: 'secret',

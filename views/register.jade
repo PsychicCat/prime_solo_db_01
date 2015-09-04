@@ -1,14 +1,9 @@
-extends layout
-
-block content
-  h1 Passport
-  form(action="/", method="POST")
-    div
+form(action="/register" method="POST")
+   div
       label(for="username") Username:
       input(type="text" name="username" id="username")
-    div
+   div
       label(for="password") Password:
       input(type="password" name="password" id="password")
-    div
-      input(type="submit" value="Log In")
-      a(href="/register") Register
+   div
+      input(type="submit" value="Register")

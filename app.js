@@ -8,20 +8,26 @@ var passport = require('passport');
 var session = require('express-session');
 var localStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
-
-//authenticating users
 var User = require('./models/user');
 
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
+// Mongo setup
+var mongoURI = "mongodb://localhost:27017/prime_example_passport";
+var MongoDB = mongoose.connect(mongoURI).connection;
+
+MongoDB.on('error', function (err) {
+  console.log('mongodb connection error', err);
 });
 
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err,user){
-    if(err) done(err);
-    done(null,user);
-  });
+MongoDB.once('open', function () {
+  console.log('mongodb connection open');
 });
+
+var index = require('./routes/index');
+var users = require('./routes/users');
+var register = require('./routes/register');
+
+var app = express();
+
 
 passport.use('local', new localStrategy({
       passReqToCallback : true,
@@ -44,24 +50,6 @@ passport.use('local', new localStrategy({
       });
     }));
 
-// Mongo setup
-var mongoURI = "mongodb://localhost:27017/prime_example_passport";
-var MongoDB = mongoose.connect(mongoURI).connection;
-
-MongoDB.on('error', function (err) {
-  console.log('mongodb connection error', err);
-});
-
-MongoDB.once('open', function () {
-  console.log('mongodb connection open');
-});
-
-var index = require('./routes/index');
-var users = require('./routes/users');
-var register = require('./routes/register');
-
-var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -73,26 +61,33 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', index);
-app.use('/users', users);
-app.use('/register', register);
-
 app.use(session({
   secret: 'secret',
   key: 'user',
   resave: true,
-  s: false,
-  cookie: {maxAge: 60000, secure: false}
+  saveUninitialized: false,
+  cookie: {maxAge: 60000, secure:false}
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use('local', new localStrategy({ passReqToCallback : true, usernameField: 'username' },
-    function(req, username, password, done) {
-    }
-));
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err,user){
+    if(err) done(err);
+    done(null,user);
+  });
+});
+
+
+app.use('/', index);
+app.use('/users', users);
+app.use('/register', register);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

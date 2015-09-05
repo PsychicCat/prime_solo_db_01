@@ -1,22 +1,23 @@
 extends layout
 
 block content
+   h1.page-header Register:
    form(action="/register" method="POST")
       fieldset
-         div
-            label(for="firstname") First Name:
-            input(type="text" name="firstname" id="firstname")
-         div
-            label(for="lastname") Last Name:
-            input(type="text" name="lastname" id="lastname")
-         div
-            label(for="email") Email:
-            input(type="email" name="email" id="email")
-         div
-            label(for="username") Username:
-            input(type="text" name="username" id="username")
-         div
-            label(for="password") Password:
-            input(type="password" name="password" id="password")
-         div
-            input(type="submit" value="Register")
+         div.form-group
+            label(for="firstname") First Name
+            input.form-control(type="text" name="firstname" id="firstname")
+         div.form-group
+            label(for="lastname") Last Name
+            input.form-control(type="text" name="lastname" id="lastname")
+         div.form-group
+            label(for="email") Email
+            input.form-control(type="email" name="email" id="email")
+         div.form-group
+            label(for="username") Username
+            input.form-control(type="text" name="username" id="username")
+         div.form-group
+            label(for="password") Password
+            input.form-control(type="password" name="password" id="password")
+         div.form-group
+            input.btn.btn-default(type="submit" value="Register")

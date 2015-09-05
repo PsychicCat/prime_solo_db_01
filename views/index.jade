@@ -1,15 +1,15 @@
 extends layout
 
 block content
-  h1 Passport
-  form(action="/" method="POST")
+  h1.page-header Sign In:
+  form(action="/" method="POST" class="form-horizontal")
     fieldset
-      div
-        label(for="username") Username:
-        input(type="text" name="username" id="username")
-      div
-        label(for="password") Password:
-        input(type="password" name="password" id="password")
-      div
-        input(type="submit" value="Log In")
+      div.form-group
+        label(for="username") Username
+        input.form-control(type="text" name="username" id="username" placeholder="Username")
+      div.form-group
+        label(for="password") Password
+        input.form-control(type="password" name="password" id="password" placeholder="Password")
+      div.form-group
+        input.btn.btn-default(type="submit" value="Log In")
         a(href="/register") Register

@@ -2,8 +2,11 @@ extends layout
 
 block content
   h1.page-header Sign In:
-  form(action="/" method="POST" class="form-horizontal")
-    fieldset
+  - if (message && message.length > 0)
+    .row
+      p.alert.alert-danger= message
+  .row
+    form.col-sm-3(action="/" method="POST" class="form-horizontal")
       .form-group
         label(for="username") Username
         input.form-control(type="text" name="username" id="username" placeholder="Username")

@@ -3,7 +3,9 @@ block content
    h2.page-header super cool users page
    #users
       each user in users
-         ul
-            li= 'Username: ' + user.username
-            li= 'Name: ' + user.firstname + " " + user.lastname
-            li= 'Email: ' + user.email
+         ul.col-sm-3
+            li.user= 'Username: ' + user.username
+            li.user= 'Name: ' + user.firstname + " " + user.lastname
+            li.user= 'Email: ' + user.email
+            button.btn.btn-sm.btn-danger.delete(data-id= user.id) Delete User
+            button.btn.btn-sm.btn-warning.edit(data-id= user.id) Edit User

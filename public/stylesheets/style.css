@@ -10,3 +10,19 @@ input {
 ul {
   list-style-type: none;
 }
+
+.user:nth-child(odd) {
+  background-color: #00d6b2;
+}
+
+.user:nth-child(even) {
+  background-color: #eeeeee;
+}
+
+.btn {
+  margin: 5px auto;
+}
+
+.edit {
+  float: right;
+}

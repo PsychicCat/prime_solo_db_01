@@ -18,8 +18,26 @@ router.get('/', function(req, res, next) {
   }
 });
 
-router.delete('/', function(req,res,next){
+router.delete('/:id', function(req,res,next){
+  Users.findByIdAndRemove(req.params.id, function(err, user){
+    if(err){
+      console.log(err);
+      next(err);
+    } else {
+      res.sendStatus(200);
+    }
+  })
+});
 
+router.put('/:id', function(req,res,next){
+  Users.findByIdAndUpdate(req.params.id, req.body, function(err, user){
+    if(err){
+      console.log(err);
+      next(err);
+    } else {
+      res.sendStatus(200);
+    }
+  })
 });
 
 module.exports = router;

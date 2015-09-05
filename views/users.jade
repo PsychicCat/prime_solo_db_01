@@ -1,0 +1,9 @@
+extends layout
+block content
+   h2.page-header super cool users page
+   #users
+      each user in users
+         ul
+            li= 'Username: ' + user.username
+            li= 'Name: ' + user.firstname + " " + user.lastname
+            li= 'Email: ' + user.email

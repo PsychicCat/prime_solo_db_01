@@ -8,6 +8,7 @@ var passport = require('passport');
 var session = require('express-session');
 var localStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
+var flash = require('connect-flash');
 var User = require('./models/user');
 
 // Mongo setup
@@ -69,7 +70,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: {maxAge: 60000, secure:false}
 }));
-
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 

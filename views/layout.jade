@@ -5,6 +5,27 @@ html
     link(rel='stylesheet', href='/vendor/bootstrap/dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    .navbar.navbar-inverse.navbar-static-top(role='navigation')
+      .container-fluid
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href='/') Very Secure Website
+        .collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li.active
+              a(href='/') Home
+            if user
+              li
+                a(href='/logout') Logout
+            else
+              li
+                a(href='/') Login
+              li
+                a(href='/register') Register
     .container
       block content
       script(src='/vendor/jquery/dist/jquery.min.js')

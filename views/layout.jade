@@ -28,6 +28,13 @@ html
               li
                 a(href='/register') Register
     .container
+      - if (message)
+        if message.error
+          .alert.alert-danger= message.error
+        if message.info
+          .alert.alert-info= message.info
+        if message.success
+          .alert.alert-success= message.success
       block content
       script(src='/vendor/jquery/dist/jquery.min.js')
       script(src='/vendor/bootstrap/dist/js/bootstrap.min.js')

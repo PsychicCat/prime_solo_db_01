@@ -26,6 +26,8 @@ MongoDB.once('open', function () {
 var index = require('./routes/index');
 var users = require('./routes/users');
 var register = require('./routes/register');
+var forgot = require('./routes/forgot');
+var logout = require('./routes/logout');
 
 var app = express();
 
@@ -38,7 +40,7 @@ passport.use('local', new localStrategy({
       User.findOne({ username: username }, function(err, user) {
         if (err) throw err;
         if (!user)
-          return done(null, false, {message: 'Incorrect username and password.'});
+          return done(null, false, {message: 'Incorrect username.'});
 
         // test a matching password
         user.comparePassword(password, function(err, isMatch) {
@@ -46,7 +48,7 @@ passport.use('local', new localStrategy({
           if(isMatch)
             return done(null, user);
           else
-            done(null, false, { message: 'Incorrect username and password.' });
+            done(null, false, { message: 'Incorrect password.' });
         });
       });
     }));
@@ -89,6 +91,8 @@ passport.deserializeUser(function(id, done) {
 app.use('/', index);
 app.use('/users', users);
 app.use('/register', register);
+app.use('/forgot', forgot);
+app.use('/logout', logout);
 
 
 // catch 404 and forward to error handler

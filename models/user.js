@@ -8,7 +8,9 @@ var UserSchema = new Schema({
     lastname: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     username: { type: String, required: true, index: {unique: true} },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 });
 
 UserSchema.pre('save', function(next){

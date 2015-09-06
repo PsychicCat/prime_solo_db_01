@@ -5,8 +5,8 @@ var passport = require('passport');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    var errors = req.flash();
-  res.render('index', { message: errors.error });
+    var message = req.flash();
+  res.render('index', { message: message });
 });
 
 router.post('/',

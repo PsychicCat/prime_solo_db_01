@@ -1,6 +1,6 @@
 extends layout
 block content
-   h2.page-header super cool users page
+   h2.page-header= 'Welcome, ' + user.username + '!'
    #users
       each user in users
          ul.col-sm-3

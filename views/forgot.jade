@@ -1,9 +1,9 @@
 extends layout
 
 block content
-   form(action='/forgot' method='POST')
+   form.col-sm-4.col-sm-offset-4(action='/forgot' method='POST')
       legend Forgot Password
-         .form-group
-            label(for='email') Email
-            input.form-control(type='text', name='email', id="email", autofocus)
-            input.btn.btn-primary(type='submit' value="Reset Password")
+      .form-group
+         label(for='email') Email
+         input.form-control(type='text', name='email', id="email", autofocus)
+         input.btn.btn-primary.btn-block(type='submit' value="Reset Password")

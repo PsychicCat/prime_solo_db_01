@@ -4,13 +4,13 @@ var Users = require('../models/user');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+  console.log(req.user);
   if(req.isAuthenticated()){
     Users.find({}, function(err, users){
       if(err){
         console.log(err);
       } else {
-        console.log(users);
-        res.render('users', { users : users});
+        res.render('users', { users : users, user: req.user});
       }
     });
   } else {

@@ -26,6 +26,7 @@
     "nodemailer": "^1.4.0",
     "passport": "^0.3.0",
     "passport-local": "^1.0.0",
+    "passport-totp": "0.0.2",
     "serve-favicon": "~2.3.0"
   }
 }

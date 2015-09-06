@@ -1,5 +1,19 @@
+form {
+  margin-top: 20px;
+}
+
+.container {
+  margin-top: 150px;
+  background-color: lightgrey;
+  border-radius: 5px;
+}
+
 a {
   color: #00B7FF;
+}
+
+h1 {
+  text-align: center;
 }
 
 input {
@@ -20,9 +34,13 @@ ul {
 }
 
 .btn {
-  margin: 5px auto;
+  margin-top: 5px;
 }
 
 .edit {
   float: right;
+}
+
+.alert {
+  margin-top: 30px;
 }

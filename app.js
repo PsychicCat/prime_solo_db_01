@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
 var localStrategy = require('passport-local').Strategy;
+var TotpStrategy = require('passport-totp').Strategy;
 var mongoose = require('mongoose');
 var flash = require('connect-flash');
 var User = require('./models/user');
@@ -27,6 +28,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var register = require('./routes/register');
 var forgot = require('./routes/forgot');
+var reset = require('./routes/reset');
 var logout = require('./routes/logout');
 
 var app = express();
@@ -40,7 +42,7 @@ passport.use('local', new localStrategy({
       User.findOne({ username: username }, function(err, user) {
         if (err) throw err;
         if (!user)
-          return done(null, false, {message: 'Incorrect username.'});
+          return done(null, false, {message: 'Incorrect username or password.'});
 
         // test a matching password
         user.comparePassword(password, function(err, isMatch) {
@@ -48,10 +50,19 @@ passport.use('local', new localStrategy({
           if(isMatch)
             return done(null, user);
           else
-            done(null, false, { message: 'Incorrect password.' });
+            done(null, false, { message: 'Incorrect username or password.' });
         });
       });
     }));
+
+passport.use(new TotpStrategy(
+    function(user, done) {
+      TotpKey.findOne({ userId: user.id }, function (err, key) {
+        if (err) { return done(err); }
+        return done(null, key.key, key.period);
+      });
+    }
+));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -93,6 +104,7 @@ app.use('/users', users);
 app.use('/register', register);
 app.use('/forgot', forgot);
 app.use('/logout', logout);
+app.use('/reset', reset);
 
 
 // catch 404 and forward to error handler

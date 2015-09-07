@@ -67,13 +67,13 @@ passport.use('local', new localStrategy({
               $unset: { lockUntil: 1 }
             };
             return user.update(updates, function(err){
-              if (err) return cb(err);
-              return cb(null, user);
+              if (err) return done(err);
+              return done(null, user);
             });
           } else {
             //increment failed login attempts counter
             user.incLoginAttempts(function(){
-              if(err) return cb(err);
+              if(err) return done(err);
             });
             done(null, false, { message: 'Incorrect username or password.' });
           }

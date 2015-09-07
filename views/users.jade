@@ -1,6 +1,6 @@
 extends layout
 block content
-   h2.page-header= 'Welcome, ' + user.username + '!'
+   h2.page-header= 'Welcome, ' + user.firstname + '!'
    #users
       each user in users
          ul.col-sm-3
@@ -8,4 +8,4 @@ block content
             li.user= 'Name: ' + user.firstname + " " + user.lastname
             li.user= 'Email: ' + user.email
             button.btn.btn-sm.btn-danger.delete(data-id= user.id) Delete User
-            button.btn.btn-sm.btn-warning.edit(data-id= user.id) Edit User
+

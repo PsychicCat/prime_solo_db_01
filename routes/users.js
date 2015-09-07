@@ -4,7 +4,6 @@ var Users = require('../models/user');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  console.log(req.user);
   if(req.isAuthenticated()){
     Users.find({}, function(err, users){
       if(err){
@@ -31,15 +30,5 @@ router.delete('/:id', function(req,res,next){
   }
 });
 
-router.put('/:id', function(req,res,next){
-  Users.findByIdAndUpdate(req.params.id, req.body, function(err, user){
-    if(err){
-      console.log(err);
-      next(err);
-    } else {
-      res.sendStatus(200);
-    }
-  })
-});
 
 module.exports = router;

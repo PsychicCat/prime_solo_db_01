@@ -3,5 +3,6 @@ $(document).ready(function(){
 
     $user.on('click', function(){
         console.log($(this).data('id'));
+        
     })
 });

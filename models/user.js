@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 12,
     MAX_LOGIN_ATTEMPTS = 5,
-    LOCK_TIME = 2 * 60 * 60 * 1000;
+    LOCK_TIME = 1200000; //20 min lock time
 
 var UserSchema = new Schema({
     firstname: { type: String, required: true },
@@ -17,11 +17,6 @@ var UserSchema = new Schema({
     lockUntil: { type: Number }
 });
 
-UserSchema.statics.failedLogin = {
-    NOT_FOUND: 0,
-    PASSWORD_INCORRECT: 1,
-    MAX_ATTEMPTS: 2
-};
 
 UserSchema.virtual('isLocked').get(function(){
    return !!(this.lockUntil && this.lockUntil > Date.now());
@@ -68,5 +63,13 @@ UserSchema.methods.incLoginAttempts = function(cb) {
     }
     return this.update(updates, cb);
 };
+
+// expose enum on the model, and provide an internal convenience reference
+var reasons = UserSchema.statics.failedLogin = {
+    NOT_FOUND: 0,
+    PASSWORD_INCORRECT: 1,
+    MAX_ATTEMPTS: 2
+};
+
 
 module.exports = mongoose.model('User', UserSchema);

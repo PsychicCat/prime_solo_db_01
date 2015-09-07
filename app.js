@@ -7,10 +7,10 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
 var localStrategy = require('passport-local').Strategy;
-var TotpStrategy = require('passport-totp').Strategy;
 var mongoose = require('mongoose');
 var flash = require('connect-flash');
 var User = require('./models/user');
+var moment = require('moment');
 
 // Mongo setup
 var mongoURI = "mongodb://localhost:27017/prime_example_passport";
@@ -24,6 +24,7 @@ MongoDB.once('open', function () {
   console.log('mongodb connection open');
 });
 
+//Initialize routes
 var index = require('./routes/index');
 var users = require('./routes/users');
 var register = require('./routes/register');
@@ -41,28 +42,46 @@ passport.use('local', new localStrategy({
     function(req, username, password, done){
       User.findOne({ username: username }, function(err, user) {
         if (err) throw err;
+        //check if user exists
         if (!user)
           return done(null, false, {message: 'Incorrect username or password.'});
+
+        //check if the account is currently locked
+        if(user.isLocked) {
+          return user.incLoginAttempts(function(err){
+            if (err) return done(err);
+            return done(null, false, {message: 'Maximum failed login attempts. Your account is locked for ' + moment(user.lockUntil).fromNow('mm') + '.' });
+          })
+        }
 
         // test a matching password
         user.comparePassword(password, function(err, isMatch) {
           if (err) throw err;
-          if(isMatch)
-            return done(null, user);
-          else
+          //check if password matches
+          if(isMatch){
+            //if no lock or failed attempts, return the user
+            if(!user.loginAttempts && !user.lockUntil) return done(null, user);
+            //reset attempts and lock info
+            var updates = {
+              $set: { loginAttempts: 0 },
+              $unset: { lockUntil: 1 }
+            };
+            return user.update(updates, function(err){
+              if (err) return cb(err);
+              return cb(null, user);
+            });
+          } else {
+            //increment failed login attempts counter
+            user.incLoginAttempts(function(){
+              if(err) return cb(err);
+            });
             done(null, false, { message: 'Incorrect username or password.' });
+          }
         });
-      });
-    }));
-
-passport.use(new TotpStrategy(
-    function(user, done) {
-      TotpKey.findOne({ userId: user.id }, function (err, key) {
-        if (err) { return done(err); }
-        return done(null, key.key, key.period);
       });
     }
 ));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

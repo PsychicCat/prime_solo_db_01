@@ -19,14 +19,16 @@ router.get('/', function(req, res, next) {
 });
 
 router.delete('/:id', function(req,res,next){
-  Users.findByIdAndRemove(req.params.id, function(err, user){
-    if(err){
-      console.log(err);
-      next(err);
-    } else {
-      res.sendStatus(200);
-    }
-  })
+  if(req.isAuthenticated()){
+    Users.findByIdAndRemove(req.params.id, function(err, user){
+      if(err){
+        console.log(err);
+        next(err);
+      } else {
+        res.sendStatus(200);
+      }
+    })
+  }
 });
 
 router.put('/:id', function(req,res,next){

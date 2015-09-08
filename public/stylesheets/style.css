@@ -25,15 +25,16 @@ ul {
   list-style-type: none;
 }
 
-.user:nth-child(odd) {
+.user li:nth-child(odd) {
   background-color: #00d6b2;
 }
 
-.user:nth-child(even) {
+.user li:nth-child(even) {
   background-color: #eeeeee;
 }
 
 .btn {
+  text-align: center;
   margin-top: 5px;
 }
 

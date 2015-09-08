@@ -27,6 +27,7 @@ MongoDB.once('open', function () {
 //Initialize routes
 var index = require('./routes/index');
 var users = require('./routes/users');
+var update = require('./routes/update');
 var register = require('./routes/register');
 var forgot = require('./routes/forgot');
 var reset = require('./routes/reset');
@@ -75,7 +76,10 @@ passport.use('local', new localStrategy({
             user.incLoginAttempts(function(){
               if(err) return done(err);
             });
-            done(null, false, { message: 'Incorrect username or password.' });
+            if(user.loginAttempts > 2){
+              return done(null, false, { message: 'Incorrect username or password. You have ' + (5 - user.loginAttempts) + ' login attempts remaining before account lock.' });
+            }
+            done(null, false, { message: 'Incorrect username or password.'});
           }
         });
       });
@@ -100,7 +104,7 @@ app.use(session({
   key: 'user',
   resave: true,
   saveUninitialized: false,
-  cookie: {maxAge: 60000, secure:false}
+  cookie: {maxAge: 600000, secure:false}
 }));
 app.use(flash());
 app.use(passport.initialize());
@@ -124,6 +128,7 @@ app.use('/register', register);
 app.use('/forgot', forgot);
 app.use('/logout', logout);
 app.use('/reset', reset);
+app.use('/update', update);
 
 
 // catch 404 and forward to error handler

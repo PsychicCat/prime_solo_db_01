@@ -7,7 +7,6 @@ router.get('/', function(req,res,next){
 });
 
 router.post('/', function(req,res,next){
-    console.log(req.body);
    Users.create(req.body, function(err,post){
        if(err){
            next(err);

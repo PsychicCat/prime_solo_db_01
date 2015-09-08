@@ -1,11 +1,19 @@
 extends layout
+
 block content
    h2.page-header= 'Welcome, ' + user.firstname + '!'
    #users
       each user in users
-         ul.col-sm-3
-            li.user= 'Username: ' + user.username
-            li.user= 'Name: ' + user.firstname + " " + user.lastname
-            li.user= 'Email: ' + user.email
+         ul.col-sm-3.user
+            li= 'Username: ' + user.username
+            li= 'Name: ' + user.firstname + " " + user.lastname
+            li= 'Email: ' + user.email
             button.btn.btn-sm.btn-danger.delete(data-id= user.id) Delete User
-
+   script#usersList(type='text/x-handlebars-template')
+      {{#each users}}
+      ul.col-sm-3.user
+         li Username: {{this.username}}
+         li Name: {{this.firstname}} {{this.lastname}}
+         li Email: {{this.email}}
+         button.btn.btn-sm.btn-danger.delete(data-id= '{{_id}}') Delete User
+      {{/each}}

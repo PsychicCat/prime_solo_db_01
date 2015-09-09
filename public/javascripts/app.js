@@ -12,6 +12,7 @@ $(document).ready(function(){
             data: message,
         }).done(function(response, textStatus, jqXHR){
             console.log('Added message to db');
+            updateMessages();
         }).fail(function( jqXHR, textStatus, errorThrown ) {
             console.log(jqXHR, textStatus, errorThrown);
         }).always(function(){
@@ -21,13 +22,13 @@ $(document).ready(function(){
 
     $('#messages').on('click', '.deleteMsg', function(){
         var id = $(this).data('id');
+        $(this).parent().remove();
 
         $.ajax({
             url: '/message/' + id,
             type: 'DELETE',
         }).done(function(response, textStatus, jqXHR){
             console.log('Deleted user');
-            $(this).parent().remove();
         }).fail(function( jqXHR, textStatus, errorThrown ) {
             console.log(jqXHR, textStatus, errorThrown);
         }).always(function(){
@@ -69,6 +70,25 @@ function getAllUsers(){
             var source = $('#usersList').html();
             var template = Handlebars.compile(source);
             $('#users').append(template(response));
+        }
+    }).fail(function( jqXHR, textStatus, errorThrown ) {
+        console.log(jqXHR, textStatus, errorThrown);
+    }).always(function(){
+        console.log('Ajax complete');
+    });
+}
+
+function updateMessages(){
+    $.ajax({
+        url: '/update/messages',
+        type: 'GET',
+        ifModified: true
+    }).done(function(response, textStatus, jqXHR){
+        if(jqXHR.status == 200){
+            $('#messages').empty();
+            var source = $('#messagesList').html();
+            var template = Handlebars.compile(source);
+            $('#messages').append(template(response));
         }
     }).fail(function( jqXHR, textStatus, errorThrown ) {
         console.log(jqXHR, textStatus, errorThrown);

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Users = require('../models/user');
+var Messages = require('../models/message');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -14,6 +15,20 @@ router.get('/', function(req, res, next) {
                     user.loginAttempts = undefined;
                 });
                 res.send({users: users});
+            }
+        });
+    } else {
+        res.sendStatus(500);
+    }
+});
+
+router.get('/messages', function(req, res, next) {
+    if(req.isAuthenticated()){
+        Messages.find({}, function(err, messages){
+            if(err){
+                console.log(err);
+            } else {
+                res.send({message: messages});
             }
         });
     } else {

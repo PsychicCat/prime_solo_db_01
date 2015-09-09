@@ -19,6 +19,22 @@ $(document).ready(function(){
         });
     });
 
+    $('#messages').on('click', '.deleteMsg', function(){
+        var id = $(this).data('id');
+
+        $.ajax({
+            url: '/message/' + id,
+            type: 'DELETE',
+        }).done(function(response, textStatus, jqXHR){
+            console.log('Deleted user');
+            $(this).parent().remove();
+        }).fail(function( jqXHR, textStatus, errorThrown ) {
+            console.log(jqXHR, textStatus, errorThrown);
+        }).always(function(){
+            console.log('Ajax complete');
+        });
+    });
+
     $users.on('click', '.delete', function(){
         var id = $(this).data('id');
         removeUser(id);

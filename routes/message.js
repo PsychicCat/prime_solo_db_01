@@ -30,4 +30,19 @@ router.post('/', function(req, res, next){
    }
 });
 
+router.delete('/:id', function(req, res, next){
+    if(req.isAuthenticated()){
+        Messages.findByIdAndRemove(req.params.id, function(err, user){
+            if(err){
+                console.log(err);
+                next(err);
+            } else {
+                res.sendStatus(200);
+            }
+        })
+    } else {
+        res.redirect('/');
+    }
+});
+
 module.exports = router;

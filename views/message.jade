@@ -1,0 +1,18 @@
+extends layout
+
+block content
+   h1.page-header User Messages!
+   form#messageform(action="/postMessage" method="POST")
+      fieldset
+         .form-group
+            label(for="message") Message:
+            textarea.form-control(type="text" name="message" id="message" placeholder="Enter Message Here..." rows="3")
+         .form-group
+            input.btn.btn-primary(type="submit" value="Post Message")
+   #messages
+      each message in messages
+         ul.userMessage.col-sm-3
+            li= 'User: ' + message.user
+            li= 'Message: ' + message.message
+            li= 'Date: ' + message.date
+            button.btn.btn-sm.btn-danger.deleteMsg Delete Message

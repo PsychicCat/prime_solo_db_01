@@ -1,5 +1,23 @@
 $(document).ready(function(){
     var $users = $('#users');
+    var $messages = $('#messageform');
+
+    $messages.on('submit', function(e){
+        e.preventDefault();
+        var message = $(this).serializeArray()[0];
+
+        $.ajax({
+            url: '/message',
+            type: 'POST',
+            data: message,
+        }).done(function(response, textStatus, jqXHR){
+            console.log('Added message to db');
+        }).fail(function( jqXHR, textStatus, errorThrown ) {
+            console.log(jqXHR, textStatus, errorThrown);
+        }).always(function(){
+            console.log('Ajax complete');
+        });
+    });
 
     $users.on('click', '.delete', function(){
         var id = $(this).data('id');
@@ -8,7 +26,7 @@ $(document).ready(function(){
     });
 
     //users will refresh every 20 seconds and update if new user detected
-    setInterval(function(){getAllUsers()}, 10000);
+    //setInterval(function(){getAllUsers()}, 10000);
 });
 
 function removeUser(id){

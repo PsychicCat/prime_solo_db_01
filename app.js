@@ -31,6 +31,7 @@ var update = require('./routes/update');
 var register = require('./routes/register');
 var forgot = require('./routes/forgot');
 var reset = require('./routes/reset');
+var message = require('./routes/message');
 var logout = require('./routes/logout');
 
 var app = express();
@@ -125,6 +126,7 @@ passport.deserializeUser(function(id, done) {
 app.use('/', index);
 app.use('/users', users);
 app.use('/register', register);
+app.use('/message', message);
 app.use('/forgot', forgot);
 app.use('/logout', logout);
 app.use('/reset', reset);

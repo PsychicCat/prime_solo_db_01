@@ -17,19 +17,7 @@ router.get('/', function(req, res, next) {
   }
 });
 
-router.get('/display', function(req, res, next) {
-  if(req.isAuthenticated()){
-    Users.find({}, function(err, users){
-      if(err){
-        console.log(err);
-      } else {
-        res.json(users);
-      }
-    });
-  } else {
-    res.render('index');
-  }
-});
+
 
 router.delete('/:id', function(req,res,next){
   if(req.isAuthenticated()){

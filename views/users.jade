@@ -1,7 +1,8 @@
 extends layout
 
 block content
-   h2.page-header= 'Welcome, ' + user.firstname + '!'
+   h2.text-center= 'Welcome, ' + user.firstname + '!'
+   h3.page-header User List:
    #users
       each user in users
          ul.col-sm-3.user

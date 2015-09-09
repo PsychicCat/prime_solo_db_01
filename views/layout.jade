@@ -16,8 +16,14 @@ html
           a.navbar-brand(href='/') Very Secure Website
         .collapse.navbar-collapse
           ul.nav.navbar-nav
-            li.active
-              a(href='/') Home
+            if user
+              li.active
+                a(href='/users') Users
+              li
+                a(href='/message') Message Board
+            else
+              li.active
+                a(href='/') Home
           ul.nav.navbar-nav.navbar-right
             if user
               li
@@ -39,4 +45,4 @@ html
       script(src='/vendor/jquery/dist/jquery.min.js')
       script(src='/vendor/bootstrap/dist/js/bootstrap.min.js')
       script(src='/javascripts/handlebars-v4.0.2.js')
-      script(src='/javascripts/app.min.js')
+      script(src='/javascripts/app.js')
